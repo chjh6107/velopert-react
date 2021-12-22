@@ -9,7 +9,7 @@ function App() {
     display:'flex'
   };
   return (
-    <Hello name="react"/>
+    <Hello name="reaact"/>
   )
 }
 
