@@ -1,5 +1,12 @@
-const Hello = (props) => {
-    console.log('hello render');
-    return (<div>하잉 {props.name} </div>);
+const Hello = ({name,color,isSpecial}) => {
+    return (
+    <div style={{color}}>
+        하잉 {name}
+        {isSpecial&&<b>*</b>};
+    </div>
+    );
+}
+Hello.defaultProps = {
+    name:"default"
 }
 export default Hello;

@@ -1,16 +1,19 @@
+import Counter from './components/Count';
 import Hello from './components/Hello'
+import InputSample from './components/InputSample';
+import Wrapper from './components/Wrapper';
 
 function App() {
-  const name='react';
-  const style={
-    backgroundColor:'black',
-    color:'aqua',
-    fontSize:24,
-    display:'flex'
-  };
-  return (
-    <Hello name="reaact"/>
-  )
+
+    return (
+        <Wrapper>
+            <Hello name="reaact" color="red" isSpecial/>
+            <Hello color="pink"/>
+            <Counter/>
+            <br/>
+            <InputSample/>
+        </Wrapper>
+    )
 }
 
 export default App;
