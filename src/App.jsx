@@ -50,6 +50,9 @@ function App() {
         })
         nextId.current++;
     }
+    const onRemove=id=>{
+        setUsers(users.filter(user=>user.id!==id));
+    }
     return (
         <>
             <Wrapper>
@@ -66,7 +69,7 @@ function App() {
                     onChange={onChange}
                     onCreate={onCreate}
                 />
-                <UserList users={users}/>
+                <UserList users={users} onRemove={onRemove}/>
             </Wrapper>
         </>
     )

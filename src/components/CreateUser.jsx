@@ -14,6 +14,7 @@ const CreateUser=({username,email,onChange,onCreate})=>{
                 value={email}
             />
             <button onClick={onCreate}>등록</button>
+            <span>(계정명이나 이메일 등록 필수)</span>
         </div>
     );
 }
