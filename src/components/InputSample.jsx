@@ -6,7 +6,7 @@ const InputSample=()=>{
         name:'',
         nickname:''
     });
-    const nameInput = useRef();
+    const nameInput = useRef(null);
 
     const {name,nickname}=inputs;
 
