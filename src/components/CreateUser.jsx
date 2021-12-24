@@ -2,8 +2,7 @@ import { useRef } from "react";
 
 const CreateUser=({username,email,onChange,onCreate})=>{
     const nameInput=useRef(null);
-    const ref=()=>nameInput.current.focus();
-    const color="red";
+    const color="RED";
     return(
         <div>
             <input
@@ -19,7 +18,10 @@ const CreateUser=({username,email,onChange,onCreate})=>{
                 onChange={onChange}
                 value={email}
             />
-            <button onClick={onCreate}>등록</button>
+            <button onClick={()=>{
+                onCreate();
+                nameInput.current.focus();
+                }}>등록</button>
             <span style={{color}}>(계정명이나 이메일 등록 필수)</span>
         </div>
     );
