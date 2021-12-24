@@ -1,4 +1,9 @@
+import { useRef } from "react";
+
 const CreateUser=({username,email,onChange,onCreate})=>{
+    const nameInput=useRef(null);
+    const ref=()=>nameInput.current.focus();
+    const color="red";
     return(
         <div>
             <input
@@ -6,7 +11,8 @@ const CreateUser=({username,email,onChange,onCreate})=>{
                 placeholder="계정명"
                 onChange={onChange}
                 value={username}
-            />
+                ref={nameInput}
+                />
             <input
                 name="email"
                 placeholder="이메일"
@@ -14,7 +20,7 @@ const CreateUser=({username,email,onChange,onCreate})=>{
                 value={email}
             />
             <button onClick={onCreate}>등록</button>
-            <span>(계정명이나 이메일 등록 필수)</span>
+            <span style={{color}}>(계정명이나 이메일 등록 필수)</span>
         </div>
     );
 }
