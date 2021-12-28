@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React from "react";
-=======
 import { useRef } from "react";
->>>>>>> 109f44f910d9969b2a540431c8578c7cc8ae82c8
 
 const CreateUser=({username,email,onChange,onCreate})=>{
     const nameInput=useRef(null);
