@@ -1,18 +1,33 @@
-const User=({u,onRemove})=>{
+import React from "react";
+
+const User= React.memo(({u,onRemove,onToggle})=>{
     return(
         <div>
-            <b>{u.username}</b> <span>({u.email})</span>
+            <b
+                style={{
+                    cursor:'pointer',
+                    color:u.active?'green':'black'
+                }}
+                onClick={()=>onToggle(u.id)}
+            >{u.username}</b>
+            &nbsp;
+            <span>({u.email})</span>
             <button onClick={function (){onRemove(u.id)}}>삭제</button>
         </div>
     );
-}
-const UserList=({users,onRemove})=>{
+});
+const UserList=({users,onRemove, onToggle})=>{
     return(
         <div>
-            {users.map((u,i)=>( //i는 map함수의 두번째 parameter인 인덱스로 인덱스를 key로 던져줌
-                <User u={u} key={i} onRemove={onRemove}/>
+            {users.map((u)=>(
+                <User
+                    u={u}
+                    key={u.id}
+                    onRemove={onRemove}
+                    onToggle={onToggle}
+                />
             ))}
         </div>
     );
 }
-export default UserList;
+export default React.memo(UserList);
