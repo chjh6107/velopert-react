@@ -41,7 +41,7 @@ const InputSample=()=>{
                 placeholder="닉네임"
                 onChange={onChange}
                 value={nickname}
-                ref={nameInput}
+                // ref={nameInput}
             />
             <button onClick={onReset}>초기화</button>
             <div>
