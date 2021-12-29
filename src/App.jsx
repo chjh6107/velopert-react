@@ -1,22 +1,53 @@
-import Counter from './components/Count';
+import Counter from './components/Counter';
 import Hello from './components/Hello'
 import InputSample from './components/InputSample';
 import Wrapper from './components/Wrapper';
 import UserList from './components/UserList';
 import CreateUser from './components/CreateUser';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
 
 const countActiveUsers = users =>{
     console.log('활성 사용자 수를 세는중...');
     return users.filter(user=>user.active).length;
 }
 
+const initialState = {
+    inputs: {
+        username: '',
+        email: ''
+    },
+    users: [
+    {
+        id: 1,
+        username: 'velopert',
+        email: 'public.velopert@gmail.com',
+        active: true
+    },
+    {
+        id: 2,
+        username: 'tester',
+        email: 'tester@example.com',
+        active: false
+    },
+    {
+        id: 3,
+        username: 'liz',
+        email: 'liz@example.com',
+        active: false
+    }
+    ]
+};
+const reducer=(state,action)=>{return state;}
+
 function App() {
-    const [inputs,setInputs]=useState({
-        username:"",
-        email:""
-    });
+    // const [inputs,setInputs]=useState({
+    //     username:"",
+    //     email:""
+    // });
     const {username,email}=inputs;
+    const [state,dispatch]=useReducer(reducer,initialState);
+    const {users}=state;
+    const {username,email}=state.inputs;
 
     const onChange=useCallback(e=>{
         const {name,value}=e.target;
@@ -25,26 +56,26 @@ function App() {
             [name]:value
         }));
     },[]);
-    const [users,setUsers] = useState([
-        {
-            id: 1,
-            username: 'velopert',
-            email: 'public.velopert@gmail.com',
-            active:true
-        },
-        {
-            id: 2,
-            username: 'tester',
-            email: 'tester@example.com',
-            active:false
-        },
-        {
-            id: 3,
-            username: 'liz',
-            email: 'liz@example.com',
-            active:false
-        }
-    ]);
+    // const [users,setUsers] = useState([
+    //     {
+    //         id: 1,
+    //         username: 'velopert',
+    //         email: 'public.velopert@gmail.com',
+    //         active:true
+    //     },
+    //     {
+    //         id: 2,
+    //         username: 'tester',
+    //         email: 'tester@example.com',
+    //         active:false
+    //     },
+    //     {
+    //         id: 3,
+    //         username: 'liz',
+    //         email: 'liz@example.com',
+    //         active:false
+    //     }
+    // ]);
     const nextId=useRef(4);
     const onCreate=useCallback(()=>{
         if(!username&&!email)return; //둘다 입력없으면 등록 무시
@@ -90,13 +121,15 @@ function App() {
                 <InputSample/>
             </Wrapper>
             <Wrapper>
-                <CreateUser
+                {/* <CreateUser
                     username={username}
                     email={email}
                     onChange={onChange}
                     onCreate={onCreate}
                 />
-                <UserList users={users} onRemove={onRemove} onToggle={onToggle}/>
+                <UserList users={users} onRemove={onRemove} onToggle={onToggle}/> */}
+                <CreateUser username={username} email={email}/>
+                <UserList users={users}/>
                 <div>활성 사용자 수 : {count}</div>
             </Wrapper>
         </>
