@@ -37,59 +37,50 @@ const initialState = {
     }
     ]
 };
-const reducer=(state,action)=>{return state;}
+const reducer=(state,action)=>{
+    switch(action.type){
+    case "CHANGE_INPUT":
+        return{
+            ...state,
+            inputs:{
+                ...state.inputs,
+                [action.name]:action.value
+            }
+        };
+    case "CREATE_USER":
+        return{
+            inputs:initialState.inputs,
+            users: state.users.concat(action.user)
+        };
+    default:
+        return state;
+    }
+}
 
 function App() {
-    // const [inputs,setInputs]=useState({
-    //     username:"",
-    //     email:""
-    // });
-    const {username,email}=inputs;
     const [state,dispatch]=useReducer(reducer,initialState);
     const {users}=state;
     const {username,email}=state.inputs;
 
     const onChange=useCallback(e=>{
         const {name,value}=e.target;
-        setInputs(inputs=>({
-            ...inputs,
-            [name]:value
-        }));
+        dispatch({
+            type:"CHANGE_INPUT",
+            name,
+            value
+        });
     },[]);
-    // const [users,setUsers] = useState([
-    //     {
-    //         id: 1,
-    //         username: 'velopert',
-    //         email: 'public.velopert@gmail.com',
-    //         active:true
-    //     },
-    //     {
-    //         id: 2,
-    //         username: 'tester',
-    //         email: 'tester@example.com',
-    //         active:false
-    //     },
-    //     {
-    //         id: 3,
-    //         username: 'liz',
-    //         email: 'liz@example.com',
-    //         active:false
-    //     }
-    // ]);
     const nextId=useRef(4);
     const onCreate=useCallback(()=>{
-        if(!username&&!email)return; //둘다 입력없으면 등록 무시
-        const user={
-            id:nextId.current,
-            username,
-            email,
-            active:false
-        };
-        setUsers(users.concat(user));
-        setInputs({
-            username:"",
-            email:""
-        })
+        if(username===""&&email==="")return;
+        dispatch({
+            type:"CREATE_USER",
+            user:{
+                id:nextId.current,
+                username,
+                email
+            }
+        });
         nextId.current++;
     },[username,email]);
     const onRemove=useCallback(id=>{
@@ -97,19 +88,12 @@ function App() {
         setUsers(users=>users.filter(user=>user.id!==id));
     },[]);
     const onToggle=useCallback(id=>{
-        // let newUsers=users.map(user=>{
-        //     user.active=(user.id===id?!user.active:user.active);
-        //     return user;
-        // });
-        // console.log("users= ",users,"newUsers =",newUsers);
-        // setUsers(newUsers);
         setUsers(users=>
             users.map(user=>
                 user.id===id?{...user,active:!user.active}:user
             )
         );
     },[]);
-    // const count=countActiveUsers(users);
     const count=useMemo(()=>countActiveUsers(users),[users]);
     return (
         <>
@@ -121,14 +105,11 @@ function App() {
                 <InputSample/>
             </Wrapper>
             <Wrapper>
-                {/* <CreateUser
+                <CreateUser
                     username={username}
                     email={email}
                     onChange={onChange}
-                    onCreate={onCreate}
-                />
-                <UserList users={users} onRemove={onRemove} onToggle={onToggle}/> */}
-                <CreateUser username={username} email={email}/>
+                    onCreate={onCreate}/>
                 <UserList users={users}/>
                 <div>활성 사용자 수 : {count}</div>
             </Wrapper>
