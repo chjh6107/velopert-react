@@ -1,6 +1,29 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
+import { UserDispatch } from "../App";
+import useInputs from "../hooks/useInputs";
 
-const CreateUser=({username,email,onChange,onCreate})=>{
+const CreateUser=()=>{
+    const [{username, email}, onChange, reset] = useInputs({
+        username: '',
+        email: ''
+    });
+    const nextId=useRef(4);
+    const dispatch = useContext(UserDispatch);
+
+    const onCreate=()=>{
+        if(username===""&&email==="")return;
+        dispatch({
+            type:"CREATE_USER",
+            user:{
+                id:nextId.current,
+                username,
+                email
+            }
+        });
+        reset();
+        nextId.current++;
+    };
+
     const nameInput=useRef(null);
     const color="RED";
     return(
@@ -10,8 +33,8 @@ const CreateUser=({username,email,onChange,onCreate})=>{
                 placeholder="계정명"
                 onChange={onChange}
                 value={username}
-                ref={nameInput}
-                />
+                // ref={nameInput}
+            />
             <input
                 name="email"
                 placeholder="이메일"
@@ -20,7 +43,7 @@ const CreateUser=({username,email,onChange,onCreate})=>{
             />
             <button onClick={()=>{
                 onCreate();
-                nameInput.current.focus();
+                // nameInput.current.focus();
                 }}>등록</button>
             <span style={{color}}>(계정명이나 이메일 등록 필수)</span>
         </div>

@@ -4,8 +4,7 @@ import InputSample from './components/InputSample';
 import Wrapper from './components/Wrapper';
 import UserList from './components/UserList';
 import CreateUser from './components/CreateUser';
-import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
-import useInputs from './hooks/useInputs';
+import React, { useMemo, useReducer } from 'react';
 
 const countActiveUsers = users =>{
     console.log('활성 사용자 수를 세는중...');
@@ -70,45 +69,12 @@ const reducer=(state,action)=>{
     }
 }
 
+export const UserDispatch = React.createContext(null);
+
 function App() {
-    
-    const [{username, email}, onChange, reset] = useInputs({
-        username: '',
-        email: ''
-    });
     const [state,dispatch]=useReducer(reducer,initialState);
-    const nextId=useRef(4);
-    
     const {users}=state;
-    
-    const onCreate=useCallback(()=>{
-        if(username===""&&email==="")return;
-        dispatch({
-            type:"CREATE_USER",
-            user:{
-                id:nextId.current,
-                username,
-                email
-            }
-        });
-        reset();
-        nextId.current++;
-    },[username,email]);
 
-    const onToggle=useCallback(id=>{
-        dispatch({
-            type:'TOGGLE_USER',
-            id
-        });
-    },[]);
-
-    const onRemove=useCallback(id=>{
-        dispatch({
-            type:"REMOVE_USER",
-            id
-        });
-    },[]);
-    
     const count=useMemo(()=>countActiveUsers(users),[users]);
     return (
         <>
@@ -120,13 +86,11 @@ function App() {
                 <InputSample/>
             </Wrapper>
             <Wrapper>
-                <CreateUser
-                    username={username}
-                    email={email}
-                    onChange={onChange}
-                    onCreate={onCreate}/>
-                <UserList users={users} onToggle={onToggle} onRemove={onRemove}/>
+                <UserDispatch.Provider value={dispatch}>
+                <CreateUser />
+                <UserList users={users}/>
                 <div>활성 사용자 수 : {count}</div>
+                </UserDispatch.Provider>
             </Wrapper>
         </>
     )
